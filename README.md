@@ -19,12 +19,12 @@ msg_debounce_time = 10.0
 b = BotManager(username, password, channel)
 
 while True:
-	time.sleep(0.2)
-	message = b.rcv_messages(msg_debounce_time)
-	if message is None:
-    continue
-  else:
-    print(message)
+    time.sleep(0.2)
+    message = b.rcv_messages(msg_debounce_time)
+    if message is None:
+        continue
+    else:
+        print(message)
 ```
 
 The `rcv_messages()` method returns a dictionary:
