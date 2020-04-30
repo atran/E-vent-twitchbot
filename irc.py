@@ -3,6 +3,8 @@ import re
 import socket
 
 class IRCClient:
+  SERVER = 'irc.chat.twitch.tv'
+  PORT = 6667
 
   socket_retry_count = 0
 
@@ -16,7 +18,7 @@ class IRCClient:
 
     sock.settimeout(10)
 
-    server = (self.settings.IRC['SERVER'], self.settings.IRC['PORT'])
+    server = (self.SERVER, self.PORT)
     try:
       sock.connect(server)
     except:
@@ -29,17 +31,17 @@ class IRCClient:
 
     sock.settimeout(None)
 
-    self.send("PASS %s\r\n" % self.settings.IRC['PASSWORD'])
-    self.send("USER %s\r\n" % self.settings.IRC['USERNAME'])
-    self.send("NICK %s\r\n" % self.settings.IRC['USERNAME'])
+    self.send("PASS %s\r\n" % self.settings['password'])
+    self.send("USER %s\r\n" % self.settings['username'])
+    self.send("NICK %s\r\n" % self.settings['username'])
 
     if not self.check_login_status(self.recv()):
       print("[ERROR] IRC credentials not accepted")
       sys.exit()
     else:
       print("[LOG] Connected to twitch.tv")
-      self.send("JOIN %s\r\n" % self.settings.IRC['CHANNEL'])
-      print("[LOG] Connected to channel %s" % self.settings.IRC['CHANNEL'])
+      self.send("JOIN %s\r\n" % self.settings['channel'])
+      print("[LOG] Connected to channel %s" % self.settings['channel'])
 
       print(sock.recv(1024))
 

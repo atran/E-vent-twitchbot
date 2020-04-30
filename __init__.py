@@ -11,23 +11,21 @@ __author__ = "Anthony Tran"
 __version__ = "0.1.0"
 __license__ = "MIT"
 
-import settings
-
 import multiprocessing
 
-from irc import IRCClient
-from bot import TwitchBot
+from .irc import IRCClient
+from .bot import TwitchBot
 
 class BotManager:
-  def __init__(self):
+  def __init__(self, username, password, channel):
+    settings = {
+      'username': username,
+      'password': password,
+      'channel': channel
+    }
+
     self.irc = IRCClient(settings)
     self.bot = TwitchBot(self.irc, multiprocessing.Queue())
 
-def main():
-  try: 
-    BotManager()
-  except KeyboardInterrupt:
-    print('exit')
-
-if __name__ == "__main__":
-  main()
+  def rcv_messages(self, debounce_time=5.0):
+    return self.bot.run(debounce_time)

@@ -5,11 +5,36 @@ This bot is written for the SCI-Arc 2020 Spring Show. It reads messages from the
 
 ## Quickstart
 
-1. Copy `.env.example` to `.env` which will populate those variables into `settings.py`.  
-2. This is run on Python 3.7 but any version of Python 3 works. There are no external dependencies. Because of this, it should just run out of the box:
+Below is an example of how to use this library. Please note the `time.sleep` command as this protects from high CPU usage. 
 
 ```
-python main.py
+import time
+from EVentBot import BotManager
+
+username = 'YOUR_USERNAME'
+password = 'oauth:YOUR_OAUTH_TOKEN'
+channel = '#twitchplaysarchitecture'
+msg_debounce_time = 10.0
+
+b = BotManager(username, password, channel)
+
+while True:
+	time.sleep(0.2)
+	message = b.rcv_messages(msg_debounce_time)
+	if message is None:
+    continue
+  else:
+    print(message)
+```
+
+The `rcv_messages()` method returns a dictionary:
+
+```
+{
+  'channel': '#twitchplaysarchitecture', 
+  'username': 'sciarcforever', 
+  'message': 'yak yak yak'
+}
 ```
 
 ## Python Versions & Package Management
