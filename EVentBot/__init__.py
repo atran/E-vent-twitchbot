@@ -17,7 +17,7 @@ from .irc import IRCClient
 from .bot import TwitchBot
 
 class BotManager:
-  def __init__(self, username, password, channel):
+  def __init__(self, username, password, channel, reply_enabled=False):
     settings = {
       'username': username,
       'password': password,
@@ -25,7 +25,7 @@ class BotManager:
     }
 
     self.irc = IRCClient(settings)
-    self.bot = TwitchBot(self.irc, multiprocessing.Queue())
+    self.bot = TwitchBot(self.irc, multiprocessing.Queue(), reply_enabled)
 
   def rcv_messages(self, debounce_time=5.0):
     return self.bot.run(debounce_time)

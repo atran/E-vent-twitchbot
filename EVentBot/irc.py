@@ -65,6 +65,10 @@ class IRCClient:
   def send(self, msg):
     return self.sock.send(msg.encode())
 
+  def send_msg(self, msg):
+    command_msg = 'PRIVMSG %s :%s\r\n' % (self.settings['channel'], msg)
+    return self.send(command_msg)
+
   def recv(self, amount=1024):
     return self.sock.recv(amount).decode()
 

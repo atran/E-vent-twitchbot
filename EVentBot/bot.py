@@ -3,9 +3,10 @@ import queue
 import threading
 
 class TwitchBot(threading.Thread):	
-	def __init__(self, irc, command_queue, log_filename=None, *args, **kwargs):
+	def __init__(self, irc, command_queue, reply_enabled, log_filename=None, *args, **kwargs):
 		self.irc = irc
 		self.command_queue = command_queue
+		self.respond = reply_enabled
 		self.running_command = None
 		self.next_run = None
 
@@ -36,6 +37,9 @@ class TwitchBot(threading.Thread):
 				debounce_time, 
 				self.clear_running_command, 
 			).start()
+
+			if (self.respond):
+				self.irc.send_msg('Running "%s" from %s 🤖⚡' % (this_command['message'], this_command['username']))
 			return this_command
 		else:
 			return None
